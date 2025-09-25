@@ -1,4 +1,4 @@
-#Groupaccountshelper
+GroupAccountshelper
 1.Theme
 This project is built as part of the Backend Developer Intern Assignment.
 The main objective was to design a secure, scalable REST API with authentication and role-based access, along with a basic frontend UI to demonstrate and interact with the APIs.
