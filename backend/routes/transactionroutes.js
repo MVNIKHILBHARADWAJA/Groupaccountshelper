@@ -5,7 +5,7 @@ import { authenticationMiddleware, authorizationMiddleware } from "../middleware
 
    router.route("/transactions")
    .get(authenticationMiddleware,allTransactions)
-   .post(authenticationMiddleware,addTransaction);
+   .post(authenticationMiddleware,authorizationMiddleware,addTransaction);
    router.route("/transaction/:id")
    .get(authenticationMiddleware,respectiveTransaction)
    .put(authenticationMiddleware,authorizationMiddleware,UpdateTransaction)

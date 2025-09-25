@@ -2,9 +2,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import clientServer from "../config";
+import { DataContext } from '../context/UserContext';
 import "./SignInForm.css";
+import { useContext } from "react";
 
 const SignInForm = () => {
+  const {User,setUser}=useContext(DataContext);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
@@ -21,10 +24,9 @@ const SignInForm = () => {
     try {
       const response = await clientServer.post("/signIn", formData);
 
-      const { token, message } = response.data;
-
-      localStorage.setItem("token", token);
-
+      const {  message,data} = response.data;
+    setUser(data);
+      
       alert(message);
       navigate("/"); 
     } catch (err) {

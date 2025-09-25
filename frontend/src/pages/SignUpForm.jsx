@@ -2,9 +2,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import clientServer from "../config"; 
-import "./SignupForm.css";
+import "./SignUpForm.css";
+import { DataContext } from "../context/UserContext";
+import { useContext } from "react";
 
 const SignupForm = () => {
+    const {User,setUser}=useContext(DataContext);  
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
@@ -18,13 +21,14 @@ const SignupForm = () => {
   };
 
   const handleSubmit = async (e) => {
+
     e.preventDefault();
     try {
       const response = await clientServer.post("/signUp", formData);
 
-      const { token, message } = response.data;
-
-      localStorage.setItem("token", token);
+      const {  message,data } = response.data;
+   
+      setUser(data);
 
       alert(message);
       navigate("/");

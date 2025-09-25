@@ -52,12 +52,8 @@ const UpdateTransaction = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem("token");
-      await clientServer.put(`/transaction/${id}`, formData, {
-  headers: {
-    Authorization: `Bearer ${token}`
-  }
-});
+      
+      await clientServer.put(`/transaction/${id}`, formData);
       navigate(`/${id}`); 
     } catch (err) {
      if (err.response) {

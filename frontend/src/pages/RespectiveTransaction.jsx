@@ -3,9 +3,12 @@ import { useParams } from "react-router-dom";
 import clientServer from "../config";
 import "./RespectiveTransaction.css";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { DataContext } from "../context/UserContext";
 
 
 const RespectiveTransaction = () => {
+  const {User,setUser}=useContext(DataContext);
   const { id } = useParams();  
   const [transaction, setTransaction] = useState(null);
     const navigate = useNavigate();
@@ -14,15 +17,11 @@ const RespectiveTransaction = () => {
   useEffect(() => {
     const fetchTransaction = async () => {
       try {  
-        const token = localStorage.getItem("token");
+       
 
   
 
-        const res = await clientServer.get(`/transaction/${id}`, {
-  headers: {
-    Authorization: `Bearer ${token}`
-  }
-});
+        const res = await clientServer.get(`/transaction/${id}`);
         console.log(res.data.data);
         setTransaction(res.data.data);
       } catch (err) {
@@ -41,13 +40,9 @@ const RespectiveTransaction = () => {
  const handleDelete = async () => {
 
       try {
-                const token = localStorage.getItem("token");
+                
 
-        await clientServer.delete(`/transaction/${id}`, {
-  headers: {
-    Authorization: `Bearer ${token}`
-  }
-});
+        await clientServer.delete(`/transaction/${id}`);
         navigate("/"); 
       } catch (err) {
 if (err.response) {
@@ -77,10 +72,12 @@ if (err.response) {
       <p><b>Category:</b> {transaction.category}</p>
       {transaction.notes && <p><b>Notes:</b> {transaction.notes}</p>} 
     </div> }
+    {User?.role === "admin" && (
     <div className="transaction-actions">
             <button onClick={handleUpdate}>Update</button>
             <button onClick={handleDelete} className="delete-btn">Delete</button>
           </div>
+          )}
     </>
   );
 };

@@ -2,14 +2,14 @@ import express from "express";
 import mongoose from "mongoose";
 import transactionRoutes from "./routes/transactionroutes.js";
 import userRoutes from "./routes/userroutes.js";
-
 import globalerrorhandler from "./middlewares/globalerrormiddleware.js";
 import ExpressError from "./utils/ExpressError.js";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 const app=express();
 
-
-app.use(cors());
+app.use(cookieParser("12345"));
+app.use(cors( {origin:"http://localhost:5173",credentials:true}));
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 

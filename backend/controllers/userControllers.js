@@ -1,3 +1,4 @@
+import { signedCookie } from "cookie-parser";
 import User from "../models/UserModel.js";
 import ExpressError from "../utils/ExpressError.js";
 import { tokenGeneration } from "../utils/jwt.js";
@@ -9,16 +10,16 @@ export const signUp=wrapAsync(async(req,res,next)=>{
     let user=await User.findOne({email:email});
     if(user)
     {
-        return next(new ExpressError(400,"user already exist with mail"));
+        return next(new ExpressError(400,`user already exist with this email`));
     }
     const hashedPassword=await bcrypt.hash(password,10);
 
      user=new User({email,password:hashedPassword,username});
     await user.save();
-
+  
     const token=tokenGeneration({id:user._id});
-
-    res.status(201).json({token,message:"user created succesfully"});
+    res.cookie("token",token,{signed:true,httpOnly:true});
+    res.status(201).json({message:`${username} account  created succesfully`,data:{username:username,role:user.role }});
 
 });
 export const signIn=wrapAsync(async(req,res,next)=>{
@@ -31,10 +32,19 @@ export const signIn=wrapAsync(async(req,res,next)=>{
     if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
 
     const token = tokenGeneration({ id: user._id });
-    res.status(200).json({ message: "Login successful", token });
+    res.cookie("token",token,{signed:true,httpOnly:true});
+    res.status(200).json({ message: `${user.username} Login successful`,data:{username:user.username,role:user.role }});
 
 });
-
+export const logOut=wrapAsync(async(req,res,next)=>{
+   res.clearCookie("token",{signed:true,httpOnly:true});
+   
+   res.status(200).json({message:`Logged out Succesfully`});
+})
+export const profile=wrapAsync(async (req,res,next)=>{
+       const username=req.user.username;
+res.status(200).json({data:username});
+})
 
 
 

@@ -24,7 +24,7 @@ const AddTransaction = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-              const token = localStorage.getItem("token");
+              
 
       const res = await clientServer.post(
   "/transactions",
@@ -32,11 +32,6 @@ const AddTransaction = () => {
     ...formData,
     amount: Number(formData.amount),
     date: formData.date ? new Date(formData.date) : undefined,
-  },
-  {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
   }
 );
   navigate("/");

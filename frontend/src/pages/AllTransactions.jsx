@@ -9,13 +9,9 @@ const AllTransactions = () => {
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
-        const token = localStorage.getItem("token");
+      
 
-  const res=await clientServer.get("/transactions", {
-  headers: {
-    Authorization: `Bearer ${token}`
-  }
-});
+  const res=await clientServer.get("/transactions");
 
         setTransactions(res.data.data);
       } catch (err) {

@@ -18,7 +18,7 @@ const initData=async ()=>
     await Transaction.deleteMany({});
      let newTransactions = transactions.map((transaction) => ({
     ...transaction,
-    user: new mongoose.Types.ObjectId("68c48a981b39ba0739686dd1"), 
+    user: new mongoose.Types.ObjectId("68d542a582ad3f210856ee8f"), 
 }));
     await Transaction.insertMany(newTransactions);
     console.log("Inserted Transactions");
